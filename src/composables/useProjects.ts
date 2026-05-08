@@ -1,5 +1,5 @@
-import { ref, watch } from 'vue'
-import type { Project } from '../data/projects'
+import { ref, watchEffect } from 'vue'
+import type { Project } from '../types'
 import { fetchProjects } from '../services/projects.service'
 import { useDonations } from './useDonations'
 import type { Donation } from '../services/donations.service'
@@ -8,27 +8,28 @@ const rawProjectsRef = ref<Project[]>([])
 const projectsRef = ref<Project[]>([])
 const loadingRef = ref(true)
 const errorRef = ref<string | null>(null)
-let fetchPromise: Promise<void> | null = null
+let initialized = false
 
-function applyDonations(projects: Project[], donations: Donation[]): Project[] {
+const { donations } = useDonations()
+
+watchEffect(() => {
+  projectsRef.value = applyDonations(rawProjectsRef.value, donations.value)
+})
+
+function applyDonations(projects: Project[], donationList: Donation[]): Project[] {
   return projects.map((p) => ({
     ...p,
-    raised: donations
+    raised: donationList
       .filter((d) => d.projectId === p.id)
       .reduce((sum, d) => sum + d.amount, 0),
   }))
 }
 
 function load(): void {
-  if (fetchPromise !== null) return
+  if (initialized) return
+  initialized = true
 
-  const { donations } = useDonations()
-
-  watch([rawProjectsRef, donations], ([projects, donationList]) => {
-    projectsRef.value = applyDonations(projects as Project[], donationList as Donation[])
-  })
-
-  fetchPromise = fetchProjects()
+  fetchProjects()
     .then((data) => {
       rawProjectsRef.value = data
     })

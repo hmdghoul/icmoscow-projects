@@ -44,10 +44,7 @@
     <footer class="border-t bg-white">
       <div class="mx-auto max-w-7xl px-6 py-8">
         <div class="flex flex-col items-center gap-2 text-center text-sm text-gray-500 md:flex-row md:justify-between md:text-left">
-          <div class="flex items-center gap-2">
-            <img src="/logo.png" alt="Islamic Center of Moscow" class="h-7 w-7 object-contain">
-            <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
-          </div>
+          <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
           <p>&copy; {{ currentYear }} Islamic Center of Moscow. All rights reserved.</p>
         </div>
       </div>

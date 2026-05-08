@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
-    <div class="h-40 shrink-0 bg-gray-100">
-      <img v-if="project.coverImage" :src="project.coverImage" :alt="project.title" class="h-full w-full object-cover">
+    <div class="relative h-40 shrink-0 overflow-hidden bg-gray-100">
+      <img v-if="project.coverImage && !imageError" :src="resolveImageUrl(project.coverImage)" :alt="project.title" loading="lazy" class="h-full w-full object-cover" @error="imageError = true">
       <div v-else class="flex h-full items-center justify-center">
         <img src="/logo.png" alt="" class="h-14 w-14 object-contain opacity-20">
       </div>
@@ -10,8 +10,8 @@
     <div class="flex flex-1 flex-col p-6">
       <div class="flex items-start justify-between gap-4">
         <h3 class="text-lg font-bold text-gray-900">{{ project.title }}</h3>
-        <span class="shrink-0 rounded-full px-3 py-1 text-xs font-semibold" :class="badgeClass">
-          {{ statusLabel }}
+        <span class="shrink-0 rounded-full px-3 py-1 text-xs font-semibold" :class="PROJECT_STATUS_BADGE[project.status]">
+          {{ PROJECT_STATUS_LABELS[project.status] }}
         </span>
       </div>
 
@@ -35,35 +35,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import type { Project } from '../data/projects'
+import type { Project } from '../types'
+import { PROJECT_STATUS_LABELS, PROJECT_STATUS_BADGE } from '../types'
 import ProgressBar from './ProgressBar.vue'
+import { formatCurrency } from '../utils/format'
+import { resolveImageUrl } from '../utils/image'
 
-const props = defineProps<{
+defineProps<{
   project: Project
 }>()
 
-const badgeClasses: Record<Project['status'], string> = {
-  active: 'bg-green-100 text-green-800',
-  completed: 'bg-blue-100 text-blue-800',
-  future: 'bg-yellow-100 text-yellow-800',
-}
-
-const statusLabels: Record<Project['status'], string> = {
-  active: 'Active',
-  completed: 'Completed',
-  future: 'Future',
-}
-
-const badgeClass = computed(() => badgeClasses[props.project.status])
-const statusLabel = computed(() => statusLabels[props.project.status])
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+const imageError = ref(false)
 </script>

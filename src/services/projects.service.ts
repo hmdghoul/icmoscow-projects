@@ -1,4 +1,4 @@
-import type { Project } from '../data/projects'
+import type { Project } from '../types'
 import { parseCsv } from './csv'
 
 function isValidStatus(s: string): s is Project['status'] {
@@ -6,7 +6,10 @@ function isValidStatus(s: string): s is Project['status'] {
 }
 
 export async function fetchProjects(): Promise<Project[]> {
-  const response = await fetch(import.meta.env.VITE_PROJECTS_CSV_URL)
+  const url = import.meta.env.VITE_PROJECTS_CSV_URL
+  if (!url) return []
+
+  const response = await fetch(url)
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
 
   const rows = parseCsv(await response.text())

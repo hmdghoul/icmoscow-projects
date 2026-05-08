@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Expense } from '../services/expenses.service'
+import { formatCurrency, formatDate } from '../utils/format'
 
 const props = defineProps<{
   expenses: Expense[]
@@ -46,16 +47,4 @@ const props = defineProps<{
 }>()
 
 const total = computed(() => props.expenses.reduce((sum, e) => sum + e.amount, 0))
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
 </script>

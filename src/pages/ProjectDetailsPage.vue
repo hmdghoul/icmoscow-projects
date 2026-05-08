@@ -1,9 +1,7 @@
 <template>
   <MainLayout>
     <div class="mx-auto max-w-7xl px-6 py-16">
-      <div v-if="loading" class="py-24 text-center text-gray-400">
-        <p class="text-sm">Loading project…</p>
-      </div>
+      <LoadingSpinner v-if="loading" message="Loading project…" />
 
       <div v-else-if="error" class="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
         <p class="font-semibold text-red-800">Unable to load project</p>
@@ -31,13 +29,13 @@
           </RouterLink>
         </div>
 
-        <div v-if="project.coverImage" class="mb-8 overflow-hidden rounded-2xl bg-gray-100">
-          <img :src="project.coverImage" :alt="project.title" class="h-64 w-full object-cover sm:h-80">
+        <div v-if="project.coverImage && !coverImageError" class="mb-8 overflow-hidden rounded-2xl bg-gray-100">
+          <img :src="resolveImageUrl(project.coverImage)" :alt="project.title" class="h-64 w-full object-cover sm:h-80" @error="coverImageError = true">
         </div>
 
         <div class="mb-10 flex flex-wrap items-start justify-between gap-6">
           <div>
-            <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="badgeClass">{{ statusLabel }}</span>
+            <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="PROJECT_STATUS_BADGE[project.status]">{{ PROJECT_STATUS_LABELS[project.status] }}</span>
             <h1 class="mt-3 text-4xl font-bold text-gray-900">
               {{ project.title }}
             </h1>
@@ -112,14 +110,16 @@
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <template v-if="projectPhotos.length > 0">
               <div v-for="photo in projectPhotos" :key="photo.id" class="overflow-hidden rounded-xl bg-gray-100">
-                <img v-if="photo.imageLink" :src="photo.imageLink" :alt="photo.caption" class="h-40 w-full object-cover">
+                <img v-if="photo.imageLink && !photoErrors[photo.id]" :src="resolveImageUrl(photo.imageLink)" :alt="photo.caption" loading="lazy" class="h-40 w-full object-cover" @error="photoErrors[photo.id] = true">
                 <div v-else class="flex h-40 items-center justify-center">
                   <div class="text-center text-gray-400">
-                    <p class="text-2xl">📷</p>
+                    <svg class="mx-auto h-8 w-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                     <p class="mt-1 text-xs font-medium">{{ photo.caption || photo.type }}</p>
                   </div>
                 </div>
-                <p v-if="photo.imageLink && photo.caption" class="px-2 py-1 text-center text-xs font-medium text-gray-600">
+                <p v-if="photo.imageLink && !photoErrors[photo.id] && photo.caption" class="px-2 py-1 text-center text-xs font-medium text-gray-600">
                   {{ photo.caption }}
                 </p>
               </div>
@@ -127,7 +127,9 @@
             <template v-else>
               <div v-for="label in photoLabels" :key="label" class="flex h-40 items-center justify-center rounded-xl bg-gray-100">
                 <div class="text-center text-gray-400">
-                  <p class="text-2xl">📷</p>
+                  <svg class="mx-auto h-8 w-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
                   <p class="mt-1 text-xs font-medium">{{ label }}</p>
                   <p class="text-xs">Coming soon</p>
                 </div>
@@ -158,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
@@ -166,12 +168,16 @@ import StatCard from '../components/StatCard.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import ReceiptTable from '../components/ReceiptTable.vue'
 import Timeline from '../components/Timeline.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useProjects } from '../composables/useProjects'
 import { useDonations } from '../composables/useDonations'
 import { useExpenses } from '../composables/useExpenses'
 import { useTimeline } from '../composables/useTimeline'
 import { usePhotos } from '../composables/usePhotos'
-import type { Project } from '../data/projects'
+import type { Project } from '../types'
+import { PROJECT_STATUS_LABELS, PROJECT_STATUS_BADGE } from '../types'
+import { formatCurrency, formatDate } from '../utils/format'
+import { resolveImageUrl } from '../utils/image'
 
 const route = useRoute()
 const { projects, loading, error } = useProjects()
@@ -179,6 +185,9 @@ const { donations } = useDonations()
 const { expenses } = useExpenses()
 const { timeline } = useTimeline()
 const { photos } = usePhotos()
+
+const coverImageError = ref(false)
+const photoErrors = reactive<Record<string, boolean>>({})
 
 const project = computed<Project | undefined>(() =>
   projects.value.find((p) => p.id === (route.params.id as string)),
@@ -201,40 +210,8 @@ const projectPhotos = computed(() =>
 )
 
 const remaining = computed(() =>
-  project.value ? project.value.goal - project.value.raised : 0,
-)
-
-const badgeClasses: Record<Project['status'], string> = {
-  active: 'bg-green-100 text-green-800',
-  completed: 'bg-blue-100 text-blue-800',
-  future: 'bg-yellow-100 text-yellow-800',
-}
-
-const statusLabels: Record<Project['status'], string> = {
-  active: 'Active',
-  completed: 'Completed',
-  future: 'Future',
-}
-
-const badgeClass = computed(() =>
-  project.value ? badgeClasses[project.value.status] : '',
-)
-
-const statusLabel = computed(() =>
-  project.value ? statusLabels[project.value.status] : '',
+  project.value ? Math.max(0, project.value.goal - project.value.raised) : 0,
 )
 
 const photoLabels = ['Before', 'During (1)', 'During (2)', 'After']
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
 </script>

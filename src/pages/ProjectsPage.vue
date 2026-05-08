@@ -13,9 +13,7 @@
         </p>
       </div>
 
-      <div v-if="loading" class="py-16 text-center text-gray-400">
-        <p class="text-sm">Loading projects…</p>
-      </div>
+      <LoadingSpinner v-if="loading" message="Loading projects…" />
 
       <div v-else-if="error" class="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
         <p class="font-semibold text-red-800">Unable to load projects</p>
@@ -56,7 +54,7 @@
         </div>
 
         <div v-if="activeProjects.length === 0 && completedProjects.length === 0 && futureProjects.length === 0" class="py-16 text-center text-gray-400">
-          No projects found for this filter.
+          <p class="text-sm">No projects found for this filter.</p>
         </div>
       </template>
     </div>
@@ -68,8 +66,9 @@ import { ref, computed } from 'vue'
 import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 import ProjectCard from '../components/ProjectCard.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useProjects } from '../composables/useProjects'
-import type { Project } from '../data/projects'
+import type { Project } from '../types'
 
 type StatusFilter = 'all' | Project['status']
 

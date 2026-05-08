@@ -9,9 +9,7 @@
         </p>
       </div>
 
-      <div v-if="isLoading" class="py-16 text-center text-gray-400">
-        <p class="text-sm">Loading financial data…</p>
-      </div>
+      <LoadingSpinner v-if="isLoading" message="Loading financial data…" />
 
       <div v-else-if="combinedError" class="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
         <p class="font-semibold text-red-800">Unable to load transparency data</p>
@@ -48,7 +46,7 @@
                   <td colspan="4" class="px-4 py-6 text-center text-gray-400">No donations recorded yet.</td>
                 </tr>
               </tbody>
-              <tfoot class="bg-gray-50">
+              <tfoot v-if="donationRows.length > 0" class="bg-gray-50">
                 <tr>
                   <td colspan="2" class="px-4 py-3 font-semibold text-gray-700">Total Raised</td>
                   <td class="px-4 py-3 font-bold text-gray-900">{{ formatCurrency(totalRaised) }}</td>
@@ -91,9 +89,11 @@ import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 import StatCard from '../components/StatCard.vue'
 import ReceiptTable from '../components/ReceiptTable.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useProjects } from '../composables/useProjects'
 import { useDonations } from '../composables/useDonations'
 import { useExpenses } from '../composables/useExpenses'
+import { formatCurrency, formatDate } from '../utils/format'
 
 interface DonationRow {
   source: string
@@ -125,16 +125,4 @@ const donationRows = computed<DonationRow[]>(() =>
 const totalRaised = computed(() => donationRows.value.reduce((sum, d) => sum + d.amount, 0))
 const totalExpenses = computed(() => allExpenses.value.reduce((sum, e) => sum + e.amount, 0))
 const balance = computed(() => totalRaised.value - totalExpenses.value)
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
 </script>

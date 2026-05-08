@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { formatCurrency } from '../utils/format'
 
 const props = defineProps<{
   raised: number
@@ -22,12 +23,4 @@ const props = defineProps<{
 const percentage = computed(() =>
   props.goal === 0 ? 0 : Math.min(100, Math.round((props.raised / props.goal) * 100)),
 )
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
 </script>

@@ -24,9 +24,7 @@
       </section>
 
       <div class="mx-auto max-w-7xl px-6 py-16">
-        <div v-if="loading" class="py-16 text-center text-gray-400">
-          <p class="text-sm">Loading project data…</p>
-        </div>
+        <LoadingSpinner v-if="loading" message="Loading project data…" />
 
         <div v-else-if="error" class="mb-16 rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
           <p class="font-semibold text-red-800">Unable to load projects</p>
@@ -78,7 +76,7 @@
                 <div>
                   <p class="text-xs text-gray-400">Remaining</p>
                   <p class="text-lg font-bold text-gray-900">
-                    {{ formatCurrency(activeProject.goal - activeProject.raised) }}
+                    {{ formatCurrency(Math.max(0, activeProject.goal - activeProject.raised)) }}
                   </p>
                 </div>
               </div>
@@ -93,14 +91,14 @@
                   <span class="rounded-full bg-green-100 px-3 py-0.5 text-xs font-semibold text-green-800">
                     {{ update.projectTitle }}
                   </span>
-                  <span class="text-xs text-gray-400">{{ formatDate(update.date) }}</span>
+                  <span class="text-xs text-gray-400">{{ formatDate(update.date, 'long') }}</span>
                 </div>
                 <p class="mt-2 text-sm text-gray-700">
                   {{ update.update }}
                 </p>
               </div>
               <div v-if="latestUpdates.length === 0" class="py-8 text-center text-gray-400">
-                No updates yet.
+                <p class="text-sm">No updates yet.</p>
               </div>
             </div>
           </div>
@@ -111,10 +109,12 @@
           <div class="grid gap-6 sm:grid-cols-2">
             <template v-if="activeProjectPhotos.length > 0">
               <div v-for="photo in activeProjectPhotos" :key="photo.id" class="overflow-hidden rounded-2xl bg-gray-100">
-                <img v-if="photo.imageLink" :src="photo.imageLink" :alt="photo.caption" class="h-56 w-full object-cover">
+                <img v-if="photo.imageLink && !photoErrors[photo.id]" :src="resolveImageUrl(photo.imageLink)" :alt="photo.caption" loading="lazy" class="h-56 w-full object-cover" @error="photoErrors[photo.id] = true">
                 <div v-else class="flex h-56 items-center justify-center">
                   <div class="text-center text-gray-400">
-                    <p class="text-3xl">📷</p>
+                    <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                     <p class="mt-2 text-sm font-medium">{{ photo.caption || photo.type }}</p>
                     <p class="text-xs">Photo coming soon</p>
                   </div>
@@ -122,17 +122,12 @@
               </div>
             </template>
             <template v-else>
-              <div class="flex h-56 items-center justify-center rounded-2xl bg-gray-100">
+              <div v-for="label in ['Before', 'After']" :key="label" class="flex h-56 items-center justify-center rounded-2xl bg-gray-100">
                 <div class="text-center text-gray-400">
-                  <p class="text-3xl">🏚️</p>
-                  <p class="mt-2 text-sm font-medium">Before — Roof Damage</p>
-                  <p class="text-xs">Photo coming soon</p>
-                </div>
-              </div>
-              <div class="flex h-56 items-center justify-center rounded-2xl bg-gray-100">
-                <div class="text-center text-gray-400">
-                  <p class="text-3xl">🏠</p>
-                  <p class="mt-2 text-sm font-medium">After — Completed Repair</p>
+                  <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p class="mt-2 text-sm font-medium">{{ label }}</p>
                   <p class="text-xs">Photo coming soon</p>
                 </div>
               </div>
@@ -162,15 +157,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { RouterLink } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import StatCard from '../components/StatCard.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import SectionHeader from '../components/SectionHeader.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useProjects } from '../composables/useProjects'
 import { useTimeline } from '../composables/useTimeline'
 import { usePhotos } from '../composables/usePhotos'
+import { formatCurrency, formatDate } from '../utils/format'
+import { resolveImageUrl } from '../utils/image'
 
 interface UpdateRow {
   date: string
@@ -181,6 +179,8 @@ interface UpdateRow {
 const { projects, loading, error } = useProjects()
 const { timeline } = useTimeline()
 const { photos } = usePhotos()
+
+const photoErrors = reactive<Record<string, boolean>>({})
 
 const activeProject = computed(() => projects.value.find((p) => p.status === 'active'))
 
@@ -206,16 +206,4 @@ const latestUpdates = computed<UpdateRow[]>(() =>
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3),
 )
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-}
 </script>

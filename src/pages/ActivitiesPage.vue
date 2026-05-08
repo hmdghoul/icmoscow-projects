@@ -9,9 +9,7 @@
         </p>
       </div>
 
-      <div v-if="loading" class="py-16 text-center text-gray-400">
-        <p class="text-sm">Loading activities…</p>
-      </div>
+      <LoadingSpinner v-if="loading" message="Loading activities…" />
 
       <div v-else-if="error" class="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
         <p class="font-semibold text-red-800">Unable to load activities</p>
@@ -20,7 +18,7 @@
 
       <div v-else class="space-y-16">
         <section v-for="section in activitySections" :key="section.category">
-          <SectionHeader :title="`${section.icon}  ${section.category}`" />
+          <SectionHeader :title="section.category" :icon="section.icon" />
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div v-for="item in section.items" :key="item.id" class="rounded-2xl bg-white p-6 shadow-sm">
               <h3 class="font-bold text-gray-900">{{ item.title }}</h3>
@@ -58,6 +56,7 @@
 import { computed } from 'vue'
 import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useActivities } from '../composables/useActivities'
 import type { Activity } from '../services/activities.service'
 
