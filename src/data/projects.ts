@@ -5,4 +5,6 @@ export interface Project {
   shortDescription: string
   goal: number
   raised: number
+  coverImage?: string
+  gofundmeLink?: string
 }

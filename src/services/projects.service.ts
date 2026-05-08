@@ -17,6 +17,9 @@ export async function fetchProjects(): Promise<Project[]> {
       const status = (row['status'] ?? '').trim()
       if (!id || !isValidStatus(status)) return null
 
+      const coverImage = (row['coverImage'] ?? '').trim() || undefined
+      const gofundmeLink = (row['gofundmeLink'] ?? '').trim() || undefined
+
       return {
         id,
         title: (row['title'] ?? '').trim(),
@@ -24,6 +27,8 @@ export async function fetchProjects(): Promise<Project[]> {
         shortDescription: (row['shortDescription'] ?? '').trim(),
         goal: Number(row['goal']) || 0,
         raised: 0,
+        coverImage,
+        gofundmeLink,
       }
     })
     .filter((p): p is Project => p !== null)

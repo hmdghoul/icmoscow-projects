@@ -2,9 +2,12 @@
   <div class="flex min-h-screen flex-col bg-gray-50 text-gray-900">
     <header class="sticky top-0 z-10 border-b bg-white shadow-sm">
       <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <RouterLink to="/" class="flex flex-col leading-tight">
-          <span class="text-lg font-bold text-gray-900">Islamic Center of Moscow</span>
-          <span class="text-xs font-medium text-green-700">Community Projects &amp; Transparency</span>
+        <RouterLink to="/" class="flex items-center gap-3">
+          <img src="/logo.png" alt="Islamic Center of Moscow" class="h-10 w-10 object-contain">
+          <div class="flex flex-col leading-tight">
+            <span class="text-lg font-bold text-gray-900">Islamic Center of Moscow</span>
+            <span class="text-xs font-medium text-green-700">Community Projects &amp; Transparency</span>
+          </div>
         </RouterLink>
 
         <div class="hidden items-center gap-6 text-sm font-medium text-gray-600 md:flex">
@@ -41,7 +44,10 @@
     <footer class="border-t bg-white">
       <div class="mx-auto max-w-7xl px-6 py-8">
         <div class="flex flex-col items-center gap-2 text-center text-sm text-gray-500 md:flex-row md:justify-between md:text-left">
-          <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
+          <div class="flex items-center gap-2">
+            <img src="/logo.png" alt="Islamic Center of Moscow" class="h-7 w-7 object-contain">
+            <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
+          </div>
           <p>&copy; {{ currentYear }} Islamic Center of Moscow. All rights reserved.</p>
         </div>
       </div>

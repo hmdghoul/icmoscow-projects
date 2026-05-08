@@ -148,9 +148,9 @@
             Every dollar donated goes directly to maintaining and improving our center. All spending is publicly documented.
           </p>
           <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="#" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
-              Donate via GoFundMe
-            </a>
+            <RouterLink to="/projects" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
+              Support Our Projects
+            </RouterLink>
             <RouterLink to="/transparency" class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
               See How Funds Are Used
             </RouterLink>

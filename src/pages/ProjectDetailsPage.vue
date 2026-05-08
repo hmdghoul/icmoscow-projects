@@ -31,6 +31,10 @@
           </RouterLink>
         </div>
 
+        <div v-if="project.coverImage" class="mb-8 overflow-hidden rounded-2xl bg-gray-100">
+          <img :src="project.coverImage" :alt="project.title" class="h-64 w-full object-cover sm:h-80">
+        </div>
+
         <div class="mb-10 flex flex-wrap items-start justify-between gap-6">
           <div>
             <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="badgeClass">{{ statusLabel }}</span>
@@ -41,7 +45,7 @@
               {{ project.shortDescription }}
             </p>
           </div>
-          <a v-if="project.status === 'active'" href="#" class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
+          <a v-if="project.gofundmeLink" :href="project.gofundmeLink" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Donate via GoFundMe
           </a>
         </div>
@@ -140,7 +144,7 @@
             We need {{ formatCurrency(remaining) }} more to complete this project. Every contribution makes a real difference.
           </p>
           <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="#" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
+            <a v-if="project.gofundmeLink" :href="project.gofundmeLink" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
               Donate via GoFundMe
             </a>
             <RouterLink to="/transparency" class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
