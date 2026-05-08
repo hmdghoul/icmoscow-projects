@@ -1,0 +1,160 @@
+:root {
+  color: #123223;
+  background: #ffffff;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #123223;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.topbar {
+  border: 1px solid #d8eadf;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #f8fcf9;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #1f6f4b;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+h1 {
+  margin: 0.4rem 0 1rem;
+  color: #144a31;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h2,
+h3,
+h4 {
+  color: #0f5f3a;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nav-button,
+.action {
+  border: 1px solid #1f8b57;
+  background: #ffffff;
+  color: #0f5f3a;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.nav-button.active,
+.nav-button:hover,
+.action:hover {
+  background: #1f8b57;
+  color: #ffffff;
+}
+
+main {
+  margin-top: 1rem;
+}
+
+.card {
+  border: 1px solid #d8eadf;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #ffffff;
+}
+
+.stats-grid,
+.project-grid,
+.photo-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-top: 1rem;
+}
+
+.project-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.photo-grid {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+}
+
+.stat,
+.project-card,
+.details,
+.field select {
+  border: 1px solid #d8eadf;
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: #f8fcf9;
+}
+
+.field {
+  display: grid;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.field select {
+  width: 100%;
+  color: #123223;
+}
+
+img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d8eadf;
+  background: #ffffff;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0.7rem;
+  }
+
+  .topbar,
+  .card {
+    padding: 0.8rem;
+  }
+
+  .nav-button,
+  .action {
+    width: 100%;
+    text-align: center;
+  }
+}
