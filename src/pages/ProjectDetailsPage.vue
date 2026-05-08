@@ -5,10 +5,7 @@
         <p class="text-6xl font-bold text-gray-200">404</p>
         <h1 class="mt-4 text-2xl font-bold text-gray-900">Project Not Found</h1>
         <p class="mt-2 text-gray-600">The project you're looking for doesn't exist.</p>
-        <RouterLink
-          to="/projects"
-          class="mt-6 inline-block rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition-colors hover:bg-green-700"
-        >
+        <RouterLink to="/projects" class="mt-6 inline-block rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition-colors hover:bg-green-700">
           Back to Projects
         </RouterLink>
       </div>
@@ -22,18 +19,11 @@
 
         <div class="mb-10 flex flex-wrap items-start justify-between gap-6">
           <div>
-            <span
-              class="rounded-full px-3 py-1 text-xs font-semibold"
-              :class="badgeClass"
-            >{{ statusLabel }}</span>
+            <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="badgeClass">{{ statusLabel }}</span>
             <h1 class="mt-3 text-4xl font-bold text-gray-900">{{ project.title }}</h1>
             <p class="mt-3 max-w-2xl text-lg text-gray-600">{{ project.shortDescription }}</p>
           </div>
-          <a
-            v-if="project.status === 'active'"
-            href="#"
-            class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700"
-          >
+          <a v-if="project.status === 'active'" href="#" class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Donate via GoFundMe
           </a>
         </div>
@@ -61,11 +51,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 bg-white">
-                <tr
-                  v-for="(donation, index) in project.donationSources"
-                  :key="index"
-                  class="hover:bg-gray-50"
-                >
+                <tr v-for="(donation, index) in project.donationSources" :key="index" class="hover:bg-gray-50">
                   <td class="px-4 py-3 text-gray-900">{{ donation.source }}</td>
                   <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(donation.amount) }}</td>
                   <td class="px-4 py-3 text-gray-500">{{ formatDate(donation.date) }}</td>
@@ -100,11 +86,7 @@
         <div class="mb-10">
           <SectionHeader title="Photo Gallery" subtitle="Documentation photos (coming soon)" />
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div
-              v-for="label in photoLabels"
-              :key="label"
-              class="flex h-40 items-center justify-center rounded-xl bg-gray-100"
-            >
+            <div v-for="label in photoLabels" :key="label" class="flex h-40 items-center justify-center rounded-xl bg-gray-100">
               <div class="text-center text-gray-400">
                 <p class="text-2xl">📷</p>
                 <p class="mt-1 text-xs font-medium">{{ label }}</p>
@@ -120,16 +102,10 @@
             We need {{ formatCurrency(remaining) }} more to complete this project. Every contribution makes a real difference.
           </p>
           <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a
-              href="#"
-              class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-            >
+            <a href="#" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
               Donate via GoFundMe
             </a>
-            <RouterLink
-              to="/transparency"
-              class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700"
-            >
+            <RouterLink to="/transparency" class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
               View All Finances
             </RouterLink>
           </div>

@@ -18,10 +18,7 @@
         <p class="text-xs text-gray-400">Goal</p>
         <p class="text-sm font-semibold text-gray-900">{{ formatCurrency(project.goal) }}</p>
       </div>
-      <RouterLink
-        :to="`/projects/${project.id}`"
-        class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
-      >
+      <RouterLink :to="`/projects/${project.id}`" class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700">
         View Details
       </RouterLink>
     </div>

@@ -11,14 +11,9 @@
 
       <div class="mb-8 flex flex-wrap gap-2">
         <button
-          v-for="opt in filterOptions"
-          :key="opt.value"
-          class="rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-          :class="selectedStatus === opt.value
+          v-for="opt in filterOptions" :key="opt.value" class="rounded-lg px-4 py-2 text-sm font-medium transition-colors" :class="selectedStatus === opt.value
             ? 'bg-green-600 text-white'
-            : 'border border-gray-200 bg-white text-gray-600 hover:border-green-300 hover:text-green-700'"
-          @click="selectedStatus = opt.value"
-        >
+            : 'border border-gray-200 bg-white text-gray-600 hover:border-green-300 hover:text-green-700'" @click="selectedStatus = opt.value">
           {{ opt.label }}
           <span class="ml-1 rounded-full px-1.5 text-xs" :class="selectedStatus === opt.value ? 'bg-green-500' : 'bg-gray-100'">
             {{ opt.count }}
@@ -47,10 +42,7 @@
         </div>
       </div>
 
-      <div
-        v-if="activeProjects.length === 0 && completedProjects.length === 0 && futureProjects.length === 0"
-        class="py-16 text-center text-gray-400"
-      >
+      <div v-if="activeProjects.length === 0 && completedProjects.length === 0 && futureProjects.length === 0" class="py-16 text-center text-gray-400">
         No projects found for this filter.
       </div>
     </div>

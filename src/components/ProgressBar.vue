@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="h-2.5 overflow-hidden rounded-full bg-gray-200">
-      <div
-        class="h-2.5 rounded-full bg-green-600 transition-all duration-700"
-        :style="{ width: percentage + '%' }"
-      />
+      <div class="h-2.5 rounded-full bg-green-600 transition-all duration-700" :style="{ width: percentage + '%' }" />
     </div>
     <div v-if="showLabel" class="mt-1.5 flex justify-between text-xs text-gray-500">
       <span>{{ formatCurrency(raised) }} raised</span>

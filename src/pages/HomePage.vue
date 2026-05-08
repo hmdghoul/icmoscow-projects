@@ -13,16 +13,10 @@
             Follow current repairs, completed projects, donation receipts, and community updates. Full transparency, always.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
-            <RouterLink
-              to="/projects"
-              class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-            >
+            <RouterLink to="/projects" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
               View Projects
             </RouterLink>
-            <RouterLink
-              to="/transparency"
-              class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-800"
-            >
+            <RouterLink to="/transparency" class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-800">
               View Transparency
             </RouterLink>
           </div>
@@ -37,10 +31,7 @@
         </div>
 
         <div v-if="activeProject" class="mb-16">
-          <SectionHeader
-            title="Current Active Project"
-            subtitle="Your donations are making this happen"
-          />
+          <SectionHeader title="Current Active Project" subtitle="Your donations are making this happen" />
           <div class="rounded-2xl bg-white p-8 shadow-sm">
             <div class="flex flex-wrap items-start justify-between gap-4">
               <div>
@@ -48,10 +39,7 @@
                 <h2 class="mt-3 text-2xl font-bold text-gray-900">{{ activeProject.title }}</h2>
                 <p class="mt-2 max-w-xl text-gray-600">{{ activeProject.shortDescription }}</p>
               </div>
-              <RouterLink
-                :to="`/projects/${activeProject.id}`"
-                class="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700"
-              >
+              <RouterLink :to="`/projects/${activeProject.id}`" class="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700">
                 Full Details
               </RouterLink>
             </div>
@@ -80,11 +68,7 @@
         <div class="mb-16">
           <SectionHeader title="Latest Updates" subtitle="Most recent news from our projects" />
           <div class="space-y-4">
-            <div
-              v-for="update in latestUpdates"
-              :key="update.date + update.projectTitle"
-              class="rounded-xl border border-gray-100 bg-white p-5"
-            >
+            <div v-for="update in latestUpdates" :key="update.date + update.projectTitle" class="rounded-xl border border-gray-100 bg-white p-5">
               <div class="flex flex-wrap items-center gap-3">
                 <span class="rounded-full bg-green-100 px-3 py-0.5 text-xs font-semibold text-green-800">
                   {{ update.projectTitle }}
@@ -125,16 +109,10 @@
             Every dollar donated goes directly to maintaining and improving our center. All spending is publicly documented.
           </p>
           <div class="mt-6 flex flex-wrap justify-center gap-4">
-            <a
-              href="#"
-              class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50"
-            >
+            <a href="#" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
               Donate via GoFundMe
             </a>
-            <RouterLink
-              to="/transparency"
-              class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700"
-            >
+            <RouterLink to="/transparency" class="rounded-lg border border-green-300 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
               See How Funds Are Used
             </RouterLink>
           </div>

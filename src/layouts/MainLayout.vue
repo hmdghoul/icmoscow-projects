@@ -8,34 +8,13 @@
         </RouterLink>
 
         <div class="hidden items-center gap-6 text-sm font-medium text-gray-600 md:flex">
-          <RouterLink
-            to="/"
-            exact-active-class="text-green-700 font-semibold"
-            active-class=""
-            class="hover:text-green-700"
-          >Home</RouterLink>
-          <RouterLink
-            to="/projects"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-          >Projects</RouterLink>
-          <RouterLink
-            to="/transparency"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-          >Transparency</RouterLink>
-          <RouterLink
-            to="/activities"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-          >Activities</RouterLink>
+          <RouterLink to="/" exact-active-class="text-green-700 font-semibold" active-class="" class="hover:text-green-700">Home</RouterLink>
+          <RouterLink to="/projects" active-class="text-green-700 font-semibold" class="hover:text-green-700">Projects</RouterLink>
+          <RouterLink to="/transparency" active-class="text-green-700 font-semibold" class="hover:text-green-700">Transparency</RouterLink>
+          <RouterLink to="/activities" active-class="text-green-700 font-semibold" class="hover:text-green-700">Activities</RouterLink>
         </div>
 
-        <button
-          class="rounded-lg p-2 text-gray-600 hover:bg-gray-100 md:hidden"
-          aria-label="Toggle menu"
-          @click="mobileMenuOpen = !mobileMenuOpen"
-        >
+        <button class="rounded-lg p-2 text-gray-600 hover:bg-gray-100 md:hidden" aria-label="Toggle menu" @click="mobileMenuOpen = !mobileMenuOpen">
           <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -47,31 +26,10 @@
 
       <div v-if="mobileMenuOpen" class="border-t bg-white px-6 py-4 md:hidden">
         <div class="flex flex-col gap-4 text-sm font-medium text-gray-600">
-          <RouterLink
-            to="/"
-            exact-active-class="text-green-700 font-semibold"
-            active-class=""
-            class="hover:text-green-700"
-            @click="mobileMenuOpen = false"
-          >Home</RouterLink>
-          <RouterLink
-            to="/projects"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-            @click="mobileMenuOpen = false"
-          >Projects</RouterLink>
-          <RouterLink
-            to="/transparency"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-            @click="mobileMenuOpen = false"
-          >Transparency</RouterLink>
-          <RouterLink
-            to="/activities"
-            active-class="text-green-700 font-semibold"
-            class="hover:text-green-700"
-            @click="mobileMenuOpen = false"
-          >Activities</RouterLink>
+          <RouterLink to="/" exact-active-class="text-green-700 font-semibold" active-class="" class="hover:text-green-700" @click="mobileMenuOpen = false">Home</RouterLink>
+          <RouterLink to="/projects" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Projects</RouterLink>
+          <RouterLink to="/transparency" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Transparency</RouterLink>
+          <RouterLink to="/activities" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Activities</RouterLink>
         </div>
       </div>
     </header>

@@ -28,11 +28,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 bg-white">
-              <tr
-                v-for="(row, index) in donationRows"
-                :key="index"
-                class="hover:bg-gray-50"
-              >
+              <tr v-for="(row, index) in donationRows" :key="index" class="hover:bg-gray-50">
                 <td class="px-4 py-3 text-gray-900">{{ row.source }}</td>
                 <td class="px-4 py-3 text-gray-500">{{ row.projectTitle }}</td>
                 <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(row.amount) }}</td>

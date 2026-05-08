@@ -13,11 +13,7 @@
         <section v-for="section in activitySections" :key="section.id">
           <SectionHeader :title="`${section.icon}  ${section.heading}`" />
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div
-              v-for="item in section.items"
-              :key="item.title"
-              class="rounded-2xl bg-white p-6 shadow-sm"
-            >
+            <div v-for="item in section.items" :key="item.title" class="rounded-2xl bg-white p-6 shadow-sm">
               <h3 class="font-bold text-gray-900">{{ item.title }}</h3>
               <p class="mt-2 text-sm text-gray-600">{{ item.description }}</p>
               <div class="mt-4 space-y-1">
