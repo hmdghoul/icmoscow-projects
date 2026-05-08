@@ -19,11 +19,11 @@ npm run build
 
 Current sample data is stored in:
 
-- `/home/runner/work/icmoscow-projects/icmoscow-projects/src/data/projects.json`
+- `src/data/projects.json`
 
 Data loading is abstracted in:
 
-- `/home/runner/work/icmoscow-projects/icmoscow-projects/src/services/projectsService.js`
+- `src/services/projectsService.js`
 
 Replace that service implementation later to load from Google Sheets.
 
