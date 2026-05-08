@@ -10,14 +10,14 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100 bg-white">
-        <tr v-for="expense in expenses" :key="expense.item + expense.date" class="hover:bg-gray-50">
+        <tr v-for="expense in expenses" :key="expense.id" class="hover:bg-gray-50">
           <td class="px-4 py-3 text-gray-900">{{ expense.item }}</td>
           <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(expense.amount) }}</td>
           <td class="px-4 py-3 text-gray-500">{{ formatDate(expense.date) }}</td>
           <td class="px-4 py-3">
-            <span v-if="expense.receipt" class="rounded bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-              {{ expense.receipt }}
-            </span>
+            <a v-if="expense.receiptLink" :href="expense.receiptLink" target="_blank" rel="noopener noreferrer" class="rounded bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 hover:underline">
+              View Receipt
+            </a>
             <span v-else class="text-gray-400">—</span>
           </td>
         </tr>
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Expense } from '../data/projects'
+import type { Expense } from '../services/expenses.service'
 
 const props = defineProps<{
   expenses: Expense[]

@@ -2,7 +2,7 @@
   <div>
     <p v-if="entries.length === 0" class="text-sm text-gray-400">No updates yet.</p>
     <div v-else class="space-y-0">
-      <div v-for="(entry, index) in entries" :key="entry.date + index" class="relative pl-8">
+      <div v-for="(entry, index) in entries" :key="entry.id" class="relative pl-8">
         <div class="absolute left-0 top-1.5 h-3 w-3 rounded-full bg-green-600 ring-2 ring-white" />
         <div v-if="index < entries.length - 1" class="absolute left-1.5 top-4 bottom-0 w-0.5 bg-gray-200" style="height: calc(100% + 0.5rem)" />
         <div class="pb-8">
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TimelineEntry } from '../data/projects'
+import type { TimelineEntry } from '../services/timeline.service'
 
 defineProps<{
   entries: TimelineEntry[]

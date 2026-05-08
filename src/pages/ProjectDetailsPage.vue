@@ -1,16 +1,30 @@
 <template>
   <MainLayout>
     <div class="mx-auto max-w-7xl px-6 py-16">
-      <div v-if="!project" class="py-24 text-center">
+      <div v-if="loading" class="py-24 text-center text-gray-400">
+        <p class="text-sm">Loading project…</p>
+      </div>
+
+      <div v-else-if="error" class="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
+        <p class="font-semibold text-red-800">Unable to load project</p>
+        <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+        <RouterLink to="/projects" class="mt-4 inline-block text-sm text-green-700 hover:underline">
+          ← Back to Projects
+        </RouterLink>
+      </div>
+
+      <div v-else-if="!project" class="py-24 text-center">
         <p class="text-6xl font-bold text-gray-200">404</p>
-        <h1 class="mt-4 text-2xl font-bold text-gray-900">Project Not Found</h1>
+        <h1 class="mt-4 text-2xl font-bold text-gray-900">
+          Project Not Found
+        </h1>
         <p class="mt-2 text-gray-600">The project you're looking for doesn't exist.</p>
         <RouterLink to="/projects" class="mt-6 inline-block rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition-colors hover:bg-green-700">
           Back to Projects
         </RouterLink>
       </div>
 
-      <template v-if="project">
+      <template v-else>
         <div class="mb-4">
           <RouterLink to="/projects" class="text-sm text-green-700 hover:underline">
             ← All Projects
@@ -20,8 +34,12 @@
         <div class="mb-10 flex flex-wrap items-start justify-between gap-6">
           <div>
             <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="badgeClass">{{ statusLabel }}</span>
-            <h1 class="mt-3 text-4xl font-bold text-gray-900">{{ project.title }}</h1>
-            <p class="mt-3 max-w-2xl text-lg text-gray-600">{{ project.shortDescription }}</p>
+            <h1 class="mt-3 text-4xl font-bold text-gray-900">
+              {{ project.title }}
+            </h1>
+            <p class="mt-3 max-w-2xl text-lg text-gray-600">
+              {{ project.shortDescription }}
+            </p>
           </div>
           <a v-if="project.status === 'active'" href="#" class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Donate via GoFundMe
@@ -35,7 +53,9 @@
         </div>
 
         <div class="mb-10 rounded-2xl bg-white p-6 shadow-sm">
-          <p class="mb-3 text-sm font-semibold text-gray-700">Funding Progress</p>
+          <p class="mb-3 text-sm font-semibold text-gray-700">
+            Funding Progress
+          </p>
           <ProgressBar :raised="project.raised" :goal="project.goal" :show-label="true" />
         </div>
 
@@ -51,16 +71,16 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 bg-white">
-                <tr v-for="(donation, index) in project.donationSources" :key="index" class="hover:bg-gray-50">
+                <tr v-for="donation in projectDonations" :key="donation.id" class="hover:bg-gray-50">
                   <td class="px-4 py-3 text-gray-900">{{ donation.source }}</td>
                   <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(donation.amount) }}</td>
                   <td class="px-4 py-3 text-gray-500">{{ formatDate(donation.date) }}</td>
                 </tr>
-                <tr v-if="project.donationSources.length === 0">
+                <tr v-if="projectDonations.length === 0">
                   <td colspan="3" class="px-4 py-6 text-center text-gray-400">No donations recorded yet.</td>
                 </tr>
               </tbody>
-              <tfoot v-if="project.donationSources.length > 0" class="bg-gray-50">
+              <tfoot v-if="projectDonations.length > 0" class="bg-gray-50">
                 <tr>
                   <td class="px-4 py-3 font-semibold text-gray-700">Total</td>
                   <td class="px-4 py-3 font-bold text-gray-900">{{ formatCurrency(project.raised) }}</td>
@@ -73,31 +93,49 @@
 
         <div class="mb-10">
           <SectionHeader title="Expenses &amp; Receipts" subtitle="All verified expenditures for this project" />
-          <ReceiptTable :expenses="project.expenses" :show-total="true" />
+          <ReceiptTable :expenses="projectExpenses" :show-total="true" />
         </div>
 
         <div class="mb-10">
           <SectionHeader title="Project Timeline" subtitle="Updates and milestones" />
           <div class="rounded-2xl bg-white p-6 shadow-sm">
-            <Timeline :entries="project.timeline" />
+            <Timeline :entries="projectTimeline" />
           </div>
         </div>
 
         <div class="mb-10">
-          <SectionHeader title="Photo Gallery" subtitle="Documentation photos (coming soon)" />
+          <SectionHeader title="Photo Gallery" :subtitle="projectPhotos.length > 0 ? 'Project documentation photos' : 'Documentation photos (coming soon)'" />
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div v-for="label in photoLabels" :key="label" class="flex h-40 items-center justify-center rounded-xl bg-gray-100">
-              <div class="text-center text-gray-400">
-                <p class="text-2xl">📷</p>
-                <p class="mt-1 text-xs font-medium">{{ label }}</p>
-                <p class="text-xs">Coming soon</p>
+            <template v-if="projectPhotos.length > 0">
+              <div v-for="photo in projectPhotos" :key="photo.id" class="overflow-hidden rounded-xl bg-gray-100">
+                <img v-if="photo.imageLink" :src="photo.imageLink" :alt="photo.caption" class="h-40 w-full object-cover">
+                <div v-else class="flex h-40 items-center justify-center">
+                  <div class="text-center text-gray-400">
+                    <p class="text-2xl">📷</p>
+                    <p class="mt-1 text-xs font-medium">{{ photo.caption || photo.type }}</p>
+                  </div>
+                </div>
+                <p v-if="photo.imageLink && photo.caption" class="px-2 py-1 text-center text-xs font-medium text-gray-600">
+                  {{ photo.caption }}
+                </p>
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div v-for="label in photoLabels" :key="label" class="flex h-40 items-center justify-center rounded-xl bg-gray-100">
+                <div class="text-center text-gray-400">
+                  <p class="text-2xl">📷</p>
+                  <p class="mt-1 text-xs font-medium">{{ label }}</p>
+                  <p class="text-xs">Coming soon</p>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
 
         <div v-if="project.status === 'active'" class="rounded-2xl bg-gradient-to-r from-green-600 to-green-800 p-10 text-center text-white">
-          <h2 class="text-2xl font-bold">Help Us Reach Our Goal</h2>
+          <h2 class="text-2xl font-bold">
+            Help Us Reach Our Goal
+          </h2>
           <p class="mt-3 text-green-100">
             We need {{ formatCurrency(remaining) }} more to complete this project. Every contribution makes a real difference.
           </p>
@@ -124,11 +162,39 @@ import StatCard from '../components/StatCard.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import ReceiptTable from '../components/ReceiptTable.vue'
 import Timeline from '../components/Timeline.vue'
-import { getProjectById } from '../data/projects'
+import { useProjects } from '../composables/useProjects'
+import { useDonations } from '../composables/useDonations'
+import { useExpenses } from '../composables/useExpenses'
+import { useTimeline } from '../composables/useTimeline'
+import { usePhotos } from '../composables/usePhotos'
 import type { Project } from '../data/projects'
 
 const route = useRoute()
-const project = computed<Project | undefined>(() => getProjectById(route.params.id as string))
+const { projects, loading, error } = useProjects()
+const { donations } = useDonations()
+const { expenses } = useExpenses()
+const { timeline } = useTimeline()
+const { photos } = usePhotos()
+
+const project = computed<Project | undefined>(() =>
+  projects.value.find((p) => p.id === (route.params.id as string)),
+)
+
+const projectDonations = computed(() =>
+  donations.value.filter((d) => d.projectId === (route.params.id as string)),
+)
+
+const projectExpenses = computed(() =>
+  expenses.value.filter((e) => e.projectId === (route.params.id as string)),
+)
+
+const projectTimeline = computed(() =>
+  timeline.value.filter((t) => t.projectId === (route.params.id as string)),
+)
+
+const projectPhotos = computed(() =>
+  photos.value.filter((ph) => ph.projectId === (route.params.id as string)),
+)
 
 const remaining = computed(() =>
   project.value ? project.value.goal - project.value.raised : 0,
