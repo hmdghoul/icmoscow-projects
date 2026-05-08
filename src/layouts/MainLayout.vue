@@ -42,7 +42,6 @@
       <div class="mx-auto max-w-7xl px-6 py-8">
         <div class="flex flex-col items-center gap-2 text-center text-sm text-gray-500 md:flex-row md:justify-between md:text-left">
           <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
-          <p>Community Transparency Portal &mdash; Phase 1</p>
           <p>&copy; {{ currentYear }} Islamic Center of Moscow. All rights reserved.</p>
         </div>
       </div>
