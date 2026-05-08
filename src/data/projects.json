@@ -1,0 +1,157 @@
+{
+  "projects": [
+    {
+      "id": "prayer-hall-renovation",
+      "title": "Prayer Hall Renovation",
+      "description": "Renovation of the main prayer hall to improve ventilation, lighting, and accessibility.",
+      "status": "current",
+      "goalAmount": 120000,
+      "raisedAmount": 82000,
+      "remainingAmount": 38000,
+      "donationSources": [
+        "Friday congregation donations",
+        "Local business sponsors",
+        "Online donations"
+      ],
+      "expenses": [
+        {
+          "label": "Materials and fixtures",
+          "amount": 46000
+        },
+        {
+          "label": "Labor and installation",
+          "amount": 21000
+        }
+      ],
+      "receiptLinks": [
+        {
+          "label": "Materials invoice",
+          "url": "https://example.org/receipts/prayer-hall-materials"
+        },
+        {
+          "label": "Contractor invoice",
+          "url": "https://example.org/receipts/prayer-hall-contractor"
+        }
+      ],
+      "photos": {
+        "before": ["/images/before.svg"],
+        "during": ["/images/during.svg"],
+        "after": []
+      },
+      "updatesTimeline": [
+        {
+          "date": "2026-03-10",
+          "text": "Initial assessment completed with architectural volunteers."
+        },
+        {
+          "date": "2026-04-02",
+          "text": "Lighting upgrade phase started."
+        },
+        {
+          "date": "2026-04-28",
+          "text": "Ventilation ductwork 70% complete."
+        }
+      ],
+      "goFundMeLink": "https://www.gofundme.com/f/prayer-hall-renovation"
+    },
+    {
+      "id": "community-library",
+      "title": "Community Library Setup",
+      "description": "Building a small community library with multilingual Islamic and educational resources.",
+      "status": "completed",
+      "goalAmount": 25000,
+      "raisedAmount": 25000,
+      "remainingAmount": 0,
+      "donationSources": [
+        "Book drive",
+        "Private donors"
+      ],
+      "expenses": [
+        {
+          "label": "Shelving and furniture",
+          "amount": 11000
+        },
+        {
+          "label": "Books and cataloging",
+          "amount": 14000
+        }
+      ],
+      "receiptLinks": [
+        {
+          "label": "Library final report",
+          "url": "https://example.org/reports/community-library"
+        }
+      ],
+      "photos": {
+        "before": ["/images/before.svg"],
+        "during": ["/images/during.svg"],
+        "after": ["/images/after.svg"]
+      },
+      "updatesTimeline": [
+        {
+          "date": "2025-11-15",
+          "text": "Community volunteers assembled shelves."
+        },
+        {
+          "date": "2025-12-20",
+          "text": "Library officially opened for students and families."
+        }
+      ],
+      "goFundMeLink": "https://www.gofundme.com/f/community-library-setup"
+    },
+    {
+      "id": "youth-center-expansion",
+      "title": "Youth Center Expansion",
+      "description": "Future expansion of youth education space, including study rooms and mentoring area.",
+      "status": "future",
+      "goalAmount": 180000,
+      "raisedAmount": 12000,
+      "remainingAmount": 168000,
+      "donationSources": [
+        "Pledged donations",
+        "Corporate CSR grants"
+      ],
+      "expenses": [
+        {
+          "label": "Permits and planning",
+          "amount": 3000
+        }
+      ],
+      "receiptLinks": [
+        {
+          "label": "Planning consultation receipt",
+          "url": "https://example.org/receipts/youth-center-planning"
+        }
+      ],
+      "photos": {
+        "before": ["/images/before.svg"],
+        "during": [],
+        "after": []
+      },
+      "updatesTimeline": [
+        {
+          "date": "2026-04-12",
+          "text": "Concept layout reviewed by youth committee."
+        }
+      ],
+      "goFundMeLink": "https://www.gofundme.com/f/youth-center-expansion"
+    }
+  ],
+  "activities": [
+    {
+      "date": "2026-05-01",
+      "title": "Volunteer Cleanup Day",
+      "description": "Families and students joined to prepare classrooms and prayer areas."
+    },
+    {
+      "date": "2026-04-18",
+      "title": "Transparency Open Session",
+      "description": "Project coordinators presented spending updates and answered questions."
+    }
+  ],
+  "contact": {
+    "email": "info@icmoscow.org",
+    "phone": "+7 (495) 000-00-00",
+    "address": "Islamic Center of Moscow, Moscow"
+  }
+}
