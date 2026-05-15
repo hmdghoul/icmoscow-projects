@@ -9,6 +9,23 @@ const SOURCE = "GoFundMe";
 
 const HEADERS = ["id", "projectId", "source", "amount", "date", "note"];
 
+function doPost(e) {
+  const apiKey = PropertiesService.getScriptProperties().getProperty('API_KEY');
+  if (!apiKey || e.parameter.key !== apiKey) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'Unauthorized' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  try {
+    syncGoFundMeDonations();
+    return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Main entry point — run this manually or on a time-based trigger
 // ---------------------------------------------------------------------------
@@ -50,14 +67,25 @@ function scrapeGoFundMe_() {
   const response = UrlFetchApp.fetch(CAMPAIGN_URL, {
     muteHttpExceptions: true,
     headers: {
-      "User-Agent": "Mozilla/5.0",
-      "Accept": "text/html"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+      "accept-language": "en-US,en;q=0.9",
+      "priority": "u=0, i",
+      "sec-ch-ua": '"Chromium";v="148", "Microsoft Edge";v="148", "Not/A)Brand";v="99"',
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": '"Windows"',
+      "sec-fetch-dest": "document",
+      "sec-fetch-mode": "navigate",
+      "sec-fetch-site": "none",
+      "sec-fetch-user": "?1",
+      "upgrade-insecure-requests": "1",
     },
   });
 
   const statusCode = response.getResponseCode();
   if (statusCode !== 200) {
-    throw new Error(`GoFundMe returned HTTP ${statusCode}`);
+    const preview = response.getContentText().substring(0, 300);
+    throw new Error(`GoFundMe returned HTTP ${statusCode}. Response preview: ${preview}`);
   }
 
   const html = response.getContentText();
