@@ -8,7 +8,7 @@
       </div>
     </section>
 
-    <section class="mx-auto max-w-3xl px-6 py-12">
+    <section class="mx-auto max-w-7xl px-6 py-12">
       <div class="rounded-2xl bg-white p-8 shadow-sm">
 
         <h2 class="mb-2 text-lg font-bold text-gray-900">Overview</h2>
@@ -37,7 +37,7 @@
 
         <h2 class="mb-2 mt-8 text-lg font-bold text-gray-900">Contact Form</h2>
         <p class="mb-4 leading-7 text-gray-600">
-          When you submit the <RouterLink to="/contact" class="text-green-700 hover:underline">Contact Us</RouterLink> form,
+          When you submit the <RouterLink to="/contact-us" class="text-green-700 hover:underline">Contact Us</RouterLink> form,
           the following information may be collected:
         </p>
         <ul class="mb-4 list-disc pl-6 leading-7 text-gray-600">
@@ -73,7 +73,7 @@
         <h2 class="mb-2 mt-8 text-lg font-bold text-gray-900">Contact Us</h2>
         <p class="mb-4 leading-7 text-gray-600">
           If you have questions or concerns about privacy on this website, please reach out
-          through our <RouterLink to="/contact" class="text-green-700 hover:underline">Contact Us</RouterLink> page.
+          through our <RouterLink to="/contact-us" class="text-green-700 hover:underline">Contact Us</RouterLink> page.
           We will do our best to address your inquiry promptly.
         </p>
 

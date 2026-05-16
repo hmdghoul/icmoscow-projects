@@ -17,7 +17,7 @@ const router = createRouter({
     { path: '/projects/:id', component: ProjectDetailsPage },
     { path: '/transparency', component: TransparencyPage },
     { path: '/activities', component: ActivitiesPage },
-    { path: '/contact', component: ContactPage },
+    { path: '/contact-us', component: ContactPage },
     { path: '/privacy', component: PrivacyPolicyPage },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],

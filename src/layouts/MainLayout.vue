@@ -15,7 +15,7 @@
           <RouterLink to="/projects" active-class="text-green-700 font-semibold" class="hover:text-green-700">Projects</RouterLink>
           <RouterLink to="/transparency" active-class="text-green-700 font-semibold" class="hover:text-green-700">Transparency</RouterLink>
           <RouterLink to="/activities" active-class="text-green-700 font-semibold" class="hover:text-green-700">Activities</RouterLink>
-          <RouterLink to="/contact" active-class="text-green-700 font-semibold" class="hover:text-green-700">Contact</RouterLink>
+          <RouterLink to="/contact-us" active-class="text-green-700 font-semibold" class="hover:text-green-700">Contact Us</RouterLink>
         </div>
 
         <button class="rounded-lg p-2 text-gray-600 hover:bg-gray-100 md:hidden" aria-label="Toggle menu" @click="mobileMenuOpen = !mobileMenuOpen">
@@ -34,7 +34,7 @@
           <RouterLink to="/projects" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Projects</RouterLink>
           <RouterLink to="/transparency" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Transparency</RouterLink>
           <RouterLink to="/activities" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Activities</RouterLink>
-          <RouterLink to="/contact" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Contact</RouterLink>
+          <RouterLink to="/contact-us" active-class="text-green-700 font-semibold" class="hover:text-green-700" @click="mobileMenuOpen = false">Contact Us</RouterLink>
         </div>
       </div>
     </header>
@@ -48,7 +48,7 @@
         <div class="flex flex-col items-center gap-4 text-center text-sm text-gray-500 md:flex-row md:justify-between md:text-left">
           <p class="font-semibold text-gray-700">Islamic Center of Moscow</p>
           <div class="flex flex-wrap items-center justify-center gap-4 md:justify-end">
-            <RouterLink to="/contact" class="hover:text-green-700">Contact Us</RouterLink>
+            <RouterLink to="/contact-us" class="hover:text-green-700">Contact Us</RouterLink>
             <RouterLink to="/privacy" class="hover:text-green-700">Privacy Policy</RouterLink>
             <span>&copy; {{ currentYear }} Islamic Center of Moscow. All rights reserved.</span>
           </div>

@@ -11,7 +11,7 @@
     </section>
 
     <section class="mx-auto max-w-2xl px-6 py-12">
-      <div v-if="submitted" class="rounded-2xl border border-green-100 bg-green-50 p-10 text-center">
+      <div v-show="submitted" class="rounded-2xl border border-green-100 bg-green-50 p-10 text-center">
         <svg class="mx-auto mb-4 h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -22,7 +22,7 @@
         </button>
       </div>
 
-      <div v-else class="rounded-2xl bg-white p-8 shadow-sm">
+      <div v-show="!submitted" class="rounded-2xl bg-white p-8 shadow-sm">
         <iframe name="hidden_iframe" class="hidden" />
 
         <form method="POST" :action="GOOGLE_FORM_ACTION_URL" target="hidden_iframe" novalidate @submit="handleSubmit">
