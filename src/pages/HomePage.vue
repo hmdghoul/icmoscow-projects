@@ -10,7 +10,7 @@
             Islamic Center of Moscow
           </h1>
           <p class="mt-4 max-w-2xl text-lg text-green-100">
-            Follow current repairs, completed projects, donation receipts, and community updates. Full transparency, always.
+            For over 50 years, the Islamic Center of Moscow has been the heart of our community. It is a place for prayer, learning, and gathering where families, students, and visitors come together throughout the year. Your support helps preserve this blessed space for worship, education, and connection for generations to come.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
             <RouterLink to="/projects" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
@@ -20,6 +20,9 @@
               View Transparency
             </RouterLink>
           </div>
+          <p class="mt-6 max-w-xl text-sm text-green-200">
+            Every donation, no matter the size, helps safeguard this house of Allah and supports a lasting source of sadaqah jariyah.
+          </p>
         </div>
       </section>
 
@@ -81,7 +84,38 @@
               </div>
             </div>
           </div>
+        </template>
 
+        <div class="mb-16 rounded-2xl border border-green-100 bg-green-50 p-10 text-center">
+          <p class="text-sm font-semibold uppercase tracking-wider text-green-700">A Reward That Continues</p>
+          <blockquote class="mx-auto mt-4 max-w-2xl text-xl font-semibold italic text-gray-900 sm:text-2xl">
+            "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise."
+          </blockquote>
+          <p class="mt-2 text-sm font-medium text-green-700">Sahih al-Bukhari and Sahih Muslim</p>
+          <p class="mx-auto mt-4 max-w-2xl text-gray-600">
+            Contributing to the maintenance of a mosque is a form of sadaqah jariyah, a continuous charity whose rewards continue long after the donation is made.
+          </p>
+        </div>
+
+        <div class="mb-16">
+          <SectionHeader title="Why This Matters" subtitle="Our community, our responsibility" />
+          <div class="rounded-2xl bg-white p-8 shadow-sm">
+            <p class="mb-4 text-gray-600">
+              For many years, the Islamic Center of Moscow has been more than just a building. It is a place where:
+            </p>
+            <ul class="mb-6 space-y-3">
+              <li v-for="item in whyItems" :key="item" class="flex items-start gap-3 text-gray-600">
+                <span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-green-600" />
+                {{ item }}
+              </li>
+            </ul>
+            <p class="text-gray-600">
+              Your contribution helps preserve a welcoming home for worship, learning, and connection for current and future generations.
+            </p>
+          </div>
+        </div>
+
+        <template v-if="!loading && !error">
           <div class="mb-16">
             <SectionHeader title="Latest Updates" subtitle="Most recent news from our projects" />
             <div class="space-y-4">
@@ -101,63 +135,54 @@
               </div>
             </div>
           </div>
-        </template>
 
-        <div class="mb-16">
-          <SectionHeader title="Why This Matters" subtitle="Our community, our responsibility" />
-          <div class="grid gap-4 sm:grid-cols-3 text-sm text-gray-600">
-            <div class="rounded-xl border border-gray-100 bg-white p-5">
-              <p class="mb-1 font-semibold text-gray-800">A place for everyone</p>
-              <p>For over 50 years, the Islamic Center of Moscow has been the heart of our community. It is a place for prayer, learning, and gathering where families, students, and visitors come together throughout the year.</p>
-            </div>
-            <div class="rounded-xl border border-gray-100 bg-white p-5">
-              <p class="mb-1 font-semibold text-gray-800">Every dollar counts</p>
-              <p>The Islamic Center relies entirely on community donations. Every repair, improvement, and community initiative is made possible through the generosity and trust of donors.</p>
-            </div>
-            <div class="rounded-xl border border-gray-100 bg-white p-5">
-              <p class="mb-1 font-semibold text-gray-800">Built on transparency</p>
-              <p>We believe every donor deserves to know how their contributions are being used. That is why we publicly share donations, expenses, receipts, and project updates so the community can follow our progress with complete transparency and accountability.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-16">
-          <SectionHeader title="Project Photos" :subtitle="activeProjectPhotos.length > 0 ? 'Before &amp; after documentation' : 'Before &amp; after documentation (photos coming soon)'" />
-          <div class="grid gap-6 sm:grid-cols-2">
-            <template v-if="activeProjectPhotos.length > 0">
-              <div v-for="photo in activeProjectPhotos" :key="photo.id" class="overflow-hidden rounded-2xl bg-gray-100">
-                <img v-if="photo.imageLink && !photoErrors[photo.id]" :src="resolveImageUrl(photo.imageLink)" :alt="photo.caption" loading="lazy" class="h-56 w-full object-cover" @error="photoErrors[photo.id] = true">
-                <div v-else class="flex h-56 items-center justify-center">
+          <div class="mb-16">
+            <SectionHeader title="Project Photos" :subtitle="activeProjectPhotos.length > 0 ? 'Before &amp; after documentation' : 'Before &amp; after documentation (photos coming soon)'" />
+            <div class="grid gap-6 sm:grid-cols-2">
+              <template v-if="activeProjectPhotos.length > 0">
+                <div v-for="photo in activeProjectPhotos" :key="photo.id" class="overflow-hidden rounded-2xl bg-gray-100">
+                  <img v-if="photo.imageLink && !photoErrors[photo.id]" :src="resolveImageUrl(photo.imageLink)" :alt="photo.caption" loading="lazy" class="h-56 w-full object-cover" @error="photoErrors[photo.id] = true">
+                  <div v-else class="flex h-56 items-center justify-center">
+                    <div class="text-center text-gray-400">
+                      <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <p class="mt-2 text-sm font-medium">{{ photo.caption || photo.type }}</p>
+                      <p class="text-xs">Photo coming soon</p>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div v-for="label in ['Before', 'After']" :key="label" class="flex h-56 items-center justify-center rounded-2xl bg-gray-100">
                   <div class="text-center text-gray-400">
                     <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <p class="mt-2 text-sm font-medium">{{ photo.caption || photo.type }}</p>
+                    <p class="mt-2 text-sm font-medium">{{ label }}</p>
                     <p class="text-xs">Photo coming soon</p>
                   </div>
                 </div>
-              </div>
-            </template>
-            <template v-else>
-              <div v-for="label in ['Before', 'After']" :key="label" class="flex h-56 items-center justify-center rounded-2xl bg-gray-100">
-                <div class="text-center text-gray-400">
-                  <svg class="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p class="mt-2 text-sm font-medium">{{ label }}</p>
-                  <p class="text-xs">Photo coming soon</p>
-                </div>
-              </div>
-            </template>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <div class="mb-16">
+          <SectionHeader title="What Our Community Says" subtitle="Voices from our community" />
+          <div class="grid gap-6 sm:grid-cols-3">
+            <div v-for="(quote, idx) in testimonials" :key="idx" class="rounded-2xl bg-white p-6 shadow-sm">
+              <p class="italic text-gray-600">{{ quote }}</p>
+            </div>
           </div>
         </div>
 
         <div class="rounded-2xl bg-gradient-to-r from-green-600 to-green-800 p-10 text-center text-white">
           <h2 class="text-2xl font-bold">
-            Support Our Community
+            Be Part of This Lasting Legacy
           </h2>
           <p class="mt-3 text-green-100">
-            Every dollar donated goes directly to maintaining and improving our center. All spending is publicly documented.
+            Your support helps protect a place of prayer, learning, and community for current and future generations.
           </p>
           <div class="mt-6 flex flex-wrap justify-center gap-4">
             <RouterLink to="/projects" class="rounded-lg bg-white px-6 py-3 font-semibold text-green-800 transition-colors hover:bg-green-50">
@@ -223,4 +248,17 @@ const latestUpdates = computed<UpdateRow[]>(() =>
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3),
 )
+
+const whyItems = [
+  'Families gather for daily and Friday prayers.',
+  'Children learn the Quran and Islamic values.',
+  'University students find community and support.',
+  'Friends and neighbors come together during Ramadan, Eid, and special events.',
+]
+
+const testimonials = [
+  '"The Islamic Center of Moscow has been a second home for our family. Supporting this project means investing in a place that brings our community together."',
+  '"As a student far from home, this masjid gave me comfort, friendship, and a sense of belonging."',
+  '"Every donation helps preserve a place where our children learn their faith and our community grows stronger."',
+]
 </script>
