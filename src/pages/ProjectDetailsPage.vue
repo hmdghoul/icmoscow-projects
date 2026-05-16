@@ -29,6 +29,20 @@
           </RouterLink>
         </div>
 
+        <button class="fixed bottom-4 right-4 z-50 flex h-8 w-8 items-center justify-center rounded-full shadow transition-all duration-300 focus:outline-none" :class="{
+          'bg-gray-300 text-gray-500 opacity-20 hover:bg-emerald-600 hover:text-white hover:opacity-90': syncState === 'idle',
+          'bg-emerald-500 text-white opacity-90 cursor-not-allowed': syncState === 'loading',
+          'bg-emerald-600 text-white opacity-90': syncState === 'done',
+          'bg-red-500 text-white opacity-90': syncState === 'error',
+        }" :title="syncTitles[syncState]" @click="syncGoFundMe">
+          <i class="text-sm" :class="{
+            'ri-refresh-line': syncState === 'idle' || syncState === 'loading',
+            'animate-spin': syncState === 'loading',
+            'ri-check-line': syncState === 'done',
+            'ri-close-line': syncState === 'error',
+          }" />
+        </button>
+
         <div v-if="project.coverImage && !coverImageError" class="relative mb-[8.45rem]">
           <div class="overflow-hidden rounded-2xl bg-gray-100">
             <img :src="resolveImageUrl(project.coverImage)" :alt="project.title" class="h-80 w-full object-cover sm:h-96" @error="coverImageError = true">
@@ -292,4 +306,26 @@ const remaining = computed(() =>
 )
 
 const photoLabels = ['Before', 'During (1)', 'During (2)', 'After']
+
+type SyncState = 'idle' | 'loading' | 'done' | 'error'
+const syncState = ref<SyncState>('idle')
+const syncTitles: Record<SyncState, string> = {
+  idle: 'Sync GoFundMe Data',
+  loading: 'Syncing…',
+  done: 'Synced!',
+  error: 'Sync failed',
+}
+
+async function syncGoFundMe() {
+  if (syncState.value === 'loading') return
+  syncState.value = 'loading'
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbwx509WKzYqF9sHMwuk-UInNwfw_cw-yebpmiIyVI9ug0l_2HA3d5mc4D3hyqiv2dyP/exec?key=icm_2026_9f4c2d8a7b1e6f3a5c8d0e9f2a4b6c7d', { method: 'POST' })
+    syncState.value = 'done'
+  } catch (_) {
+    syncState.value = 'error'
+  } finally {
+    setTimeout(() => { syncState.value = 'idle' }, 3000)
+  }
+}
 </script>
