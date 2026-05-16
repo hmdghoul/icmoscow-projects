@@ -24,6 +24,7 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
+        SubmitEvent: 'readonly',
       },
       parserOptions: {
         parser: tseslint.parser,

@@ -5,6 +5,8 @@ import ProjectsPage from '../pages/ProjectsPage.vue'
 import ProjectDetailsPage from '../pages/ProjectDetailsPage.vue'
 import TransparencyPage from '../pages/TransparencyPage.vue'
 import ActivitiesPage from '../pages/ActivitiesPage.vue'
+import ContactPage from '../pages/ContactPage.vue'
+import PrivacyPolicyPage from '../pages/PrivacyPolicyPage.vue'
 import NotFoundPage from '../pages/NotFoundPage.vue'
 
 const router = createRouter({
@@ -15,6 +17,8 @@ const router = createRouter({
     { path: '/projects/:id', component: ProjectDetailsPage },
     { path: '/transparency', component: TransparencyPage },
     { path: '/activities', component: ActivitiesPage },
+    { path: '/contact', component: ContactPage },
+    { path: '/privacy', component: PrivacyPolicyPage },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
   ],
   scrollBehavior() {
