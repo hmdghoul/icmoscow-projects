@@ -3,7 +3,7 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 
 export default [
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'appscripts'] },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -22,6 +22,7 @@ export default [
       'vue/html-closing-bracket-newline': 'off',
       'vue/singleline-html-element-content-newline': 'off',
       'vue/multiline-html-element-content-newline': 'off',
+      'vue/first-attribute-linebreak': 'off',
 
       '@typescript-eslint/consistent-type-imports': [
         'error',

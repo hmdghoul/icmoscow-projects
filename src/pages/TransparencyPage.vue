@@ -25,35 +25,72 @@
 
         <div class="mb-12">
           <SectionHeader title="Donation Sources" subtitle="All donations received across all projects" />
-          <div class="overflow-x-auto rounded-xl border border-gray-100">
+          <div class="overflow-x-auto rounded-xl border border-gray-100 mb-4">
             <table class="w-full text-sm">
               <thead class="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
                 <tr>
                   <th class="px-4 py-3">Source</th>
-                  <th class="px-4 py-3">Project</th>
-                  <th class="px-4 py-3">Amount</th>
-                  <th class="px-4 py-3">Date</th>
+                  <th class="px-4 py-3">Total</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 bg-white">
-                <tr v-for="(row, index) in donationRows" :key="index" class="hover:bg-gray-50">
+                <tr v-for="row in donationsBySource" :key="row.source" class="hover:bg-gray-50">
                   <td class="px-4 py-3 text-gray-900">{{ row.source }}</td>
-                  <td class="px-4 py-3 text-gray-500">{{ row.projectTitle }}</td>
-                  <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(row.amount) }}</td>
-                  <td class="px-4 py-3 text-gray-500">{{ formatDate(row.date) }}</td>
+                  <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(row.total) }}</td>
                 </tr>
-                <tr v-if="donationRows.length === 0">
-                  <td colspan="4" class="px-4 py-6 text-center text-gray-400">No donations recorded yet.</td>
+                <tr v-if="donationsBySource.length === 0">
+                  <td colspan="2" class="px-4 py-6 text-center text-gray-400">No donations recorded yet.</td>
                 </tr>
               </tbody>
-              <tfoot v-if="donationRows.length > 0" class="bg-gray-50">
-                <tr>
-                  <td colspan="2" class="px-4 py-3 font-semibold text-gray-700">Total Raised</td>
-                  <td class="px-4 py-3 font-bold text-gray-900">{{ formatCurrency(totalRaised) }}</td>
-                  <td />
-                </tr>
-              </tfoot>
             </table>
+          </div>
+          <div v-if="donationRows.length > 0">
+            <div class="mb-4 grid gap-4 sm:grid-cols-3">
+              <div v-for="(d, i) in top3DonationRows" :key="d.source + d.amount" class="rounded-xl border p-4" :class="RANK_STYLES[i].card">
+                <p class="text-xs font-semibold uppercase tracking-wide" :class="RANK_STYLES[i].label">
+                  {{ RANK_LABELS[i] }}
+                </p>
+                <p class="mt-1 text-xl font-bold text-gray-900">{{ formatCurrency(d.amount) }}</p>
+                <p class="text-sm text-gray-600">{{ d.source }}</p>
+                <p class="text-xs text-gray-400">{{ d.projectTitle }}</p>
+                <p class="mt-1 text-xs text-gray-400">{{ formatDate(d.date) }}</p>
+              </div>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <tr>
+                    <th class="px-4 py-3">Source</th>
+                    <th class="px-4 py-3">Project</th>
+                    <th class="px-4 py-3">Amount</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Note</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white">
+                  <tr v-for="(row, index) in pagedDonationRows" :key="index" class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-gray-900">{{ row.source }}</td>
+                    <td class="px-4 py-3 text-gray-500">{{ row.projectTitle }}</td>
+                    <td class="px-4 py-3 font-medium text-gray-900">{{ formatCurrency(row.amount) }}</td>
+                    <td class="px-4 py-3 text-gray-500">{{ formatDate(row.date) }}</td>
+                    <td class="px-4 py-3 text-gray-500">{{ row.note }}</td>
+                  </tr>
+                </tbody>
+                <tfoot class="bg-gray-50">
+                  <tr>
+                    <td colspan="2" class="px-4 py-3 font-semibold text-gray-700">Total Raised</td>
+                    <td class="px-4 py-3 font-bold text-gray-900">{{ formatCurrency(totalRaised) }}</td>
+                    <td />
+                    <td />
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div v-if="totalDonationPages > 1" class="mt-3 flex items-center justify-between text-sm">
+              <button :disabled="donationPage === 1" class="rounded px-3 py-1 text-gray-600 hover:text-gray-900 disabled:opacity-40" @click="donationPage--">← Previous</button>
+              <span class="text-xs text-gray-500">Page {{ donationPage }} of {{ totalDonationPages }}</span>
+              <button :disabled="donationPage === totalDonationPages" class="rounded px-3 py-1 text-gray-600 hover:text-gray-900 disabled:opacity-40" @click="donationPage++">Next →</button>
+            </div>
           </div>
         </div>
 
@@ -84,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 import StatCard from '../components/StatCard.vue'
@@ -95,11 +132,19 @@ import { useDonations } from '../composables/useDonations'
 import { useExpenses } from '../composables/useExpenses'
 import { formatCurrency, formatDate } from '../utils/format'
 
+const RANK_LABELS = ['1st', '2nd', '3rd'] as const
+const RANK_STYLES = [
+  { card: 'border-emerald-300 bg-emerald-100', label: 'text-emerald-800' },
+  { card: 'border-green-300 bg-green-100',     label: 'text-green-800'   },
+  { card: 'border-teal-300 bg-teal-100',       label: 'text-teal-800'    },
+] as const
+
 interface DonationRow {
   source: string
   projectTitle: string
   amount: number
   date: string
+  note: string
 }
 
 const { projects, loading: projectsLoading, error: projectsError } = useProjects()
@@ -119,8 +164,37 @@ const donationRows = computed<DonationRow[]>(() =>
     projectTitle: projectTitleMap.value[d.projectId] ?? d.projectId,
     amount: d.amount,
     date: d.date,
+    note: d.note,
   })),
 )
+
+const donationsBySource = computed(() => {
+  const map = new Map<string, number>()
+  for (const d of donations.value) {
+    map.set(d.source, (map.get(d.source) ?? 0) + d.amount)
+  }
+  const result: { source: string; total: number }[] = []
+  for (const [source, total] of map) result.push({ source, total })
+  return result
+})
+
+const top3DonationRows = computed(() =>
+  [...donationRows.value].sort((a, b) => b.amount - a.amount).slice(0, 3),
+)
+
+const PAGE_SIZE = 10
+const donationPage = ref(1)
+
+const sortedDonationRows = computed(() =>
+  [...donationRows.value].sort((a, b) => b.date.localeCompare(a.date)),
+)
+
+const totalDonationPages = computed(() => Math.max(1, Math.ceil(sortedDonationRows.value.length / PAGE_SIZE)))
+
+const pagedDonationRows = computed(() => {
+  const start = (donationPage.value - 1) * PAGE_SIZE
+  return sortedDonationRows.value.slice(start, start + PAGE_SIZE)
+})
 
 const totalRaised = computed(() => donationRows.value.reduce((sum, d) => sum + d.amount, 0))
 const totalExpenses = computed(() => allExpenses.value.reduce((sum, e) => sum + e.amount, 0))

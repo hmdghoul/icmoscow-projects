@@ -35,7 +35,7 @@
           <div class="mb-16 grid gap-6 sm:grid-cols-3">
             <StatCard label="Total Raised" :value="formatCurrency(totalRaised)" sub-label="All projects combined" accent />
             <StatCard label="Active Projects" :value="String(activeCount)" sub-label="Currently in progress" />
-            <StatCard label="Community Members" value="150+" sub-label="Families served" />
+            <StatCard label="Community Members" value="50+ Years" sub-label="Serving the Moscow community" />
           </div>
 
           <div v-if="activeProject" class="mb-16">
@@ -103,6 +103,24 @@
             </div>
           </div>
         </template>
+
+        <div class="mb-16">
+          <SectionHeader title="Why This Matters" subtitle="Our community, our responsibility" />
+          <div class="grid gap-4 sm:grid-cols-3 text-sm text-gray-600">
+            <div class="rounded-xl border border-gray-100 bg-white p-5">
+              <p class="mb-1 font-semibold text-gray-800">A place for everyone</p>
+              <p>For over 50 years, the Islamic Center of Moscow has been the heart of our community. It is a place for prayer, learning, and gathering where families, students, and visitors come together throughout the year.</p>
+            </div>
+            <div class="rounded-xl border border-gray-100 bg-white p-5">
+              <p class="mb-1 font-semibold text-gray-800">Every dollar counts</p>
+              <p>The Islamic Center relies entirely on community donations. Every repair, improvement, and community initiative is made possible through the generosity and trust of donors.</p>
+            </div>
+            <div class="rounded-xl border border-gray-100 bg-white p-5">
+              <p class="mb-1 font-semibold text-gray-800">Built on transparency</p>
+              <p>We believe every donor deserves to know how their contributions are being used. That is why we publicly share donations, expenses, receipts, and project updates so the community can follow our progress with complete transparency and accountability.</p>
+            </div>
+          </div>
+        </div>
 
         <div class="mb-16">
           <SectionHeader title="Project Photos" :subtitle="activeProjectPhotos.length > 0 ? 'Before &amp; after documentation' : 'Before &amp; after documentation (photos coming soon)'" />
