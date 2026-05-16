@@ -12,6 +12,19 @@ export default [
   {
     files: ['**/*.{ts,vue}'],
     languageOptions: {
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        performance: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        fetch: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+      },
       parserOptions: {
         parser: tseslint.parser,
       },

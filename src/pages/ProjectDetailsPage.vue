@@ -29,11 +29,18 @@
           </RouterLink>
         </div>
 
-        <div v-if="project.coverImage && !coverImageError" class="mb-8 overflow-hidden rounded-2xl bg-gray-100">
-          <img :src="resolveImageUrl(project.coverImage)" :alt="project.title" class="h-64 w-full object-cover sm:h-80" @error="coverImageError = true">
+        <div v-if="project.coverImage && !coverImageError" class="relative mb-[8.45rem]">
+          <div class="overflow-hidden rounded-2xl bg-gray-100">
+            <img :src="resolveImageUrl(project.coverImage)" :alt="project.title" class="h-80 w-full object-cover sm:h-96" @error="coverImageError = true">
+          </div>
+          <div class="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-[65%]">
+            <div class="rounded-full bg-white p-2 shadow-xl ring-1 ring-gray-100">
+              <CircularProgress :raised="project.raised" :goal="project.goal" />
+            </div>
+          </div>
         </div>
 
-        <div class="mb-10 flex flex-wrap items-start justify-between gap-6">
+        <div class="mb-10 flex flex-wrap items-start justify-between gap-6" :class="!(project.coverImage && !coverImageError) ? 'mt-4' : ''">
           <div>
             <span class="rounded-full px-3 py-1 text-xs font-semibold" :class="PROJECT_STATUS_BADGE[project.status]">{{ PROJECT_STATUS_LABELS[project.status] }}</span>
             <h1 class="mt-3 text-4xl font-bold text-gray-900">
@@ -42,6 +49,11 @@
             <p class="mt-3 max-w-2xl text-lg text-gray-600">
               {{ project.shortDescription }}
             </p>
+          </div>
+          <div v-if="!(project.coverImage && !coverImageError)" class="flex justify-center">
+            <div class="rounded-full bg-white p-2 shadow-xl ring-1 ring-gray-100">
+              <CircularProgress :raised="project.raised" :goal="project.goal" />
+            </div>
           </div>
           <a v-if="project.gofundmeLink" :href="project.gofundmeLink" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-700">
             Donate via GoFundMe
@@ -52,13 +64,6 @@
           <StatCard label="Goal" :value="formatCurrency(project.goal)" sub-label="Total project budget" />
           <StatCard label="Raised" :value="formatCurrency(project.raised)" sub-label="Donations received" accent />
           <StatCard label="Remaining" :value="formatCurrency(remaining)" sub-label="Still needed" />
-        </div>
-
-        <div class="mb-10 rounded-2xl bg-white p-6 shadow-sm">
-          <p class="mb-3 text-sm font-semibold text-gray-700">
-            Funding Progress
-          </p>
-          <ProgressBar :raised="project.raised" :goal="project.goal" :show-label="true" />
         </div>
 
         <div class="mb-10">
@@ -201,7 +206,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 import StatCard from '../components/StatCard.vue'
-import ProgressBar from '../components/ProgressBar.vue'
+import CircularProgress from '../components/CircularProgress.vue'
 import ReceiptTable from '../components/ReceiptTable.vue'
 import Timeline from '../components/Timeline.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
@@ -218,8 +223,8 @@ import { resolveImageUrl } from '../utils/image'
 const RANK_LABELS = ['1st', '2nd', '3rd'] as const
 const RANK_STYLES = [
   { card: 'border-emerald-300 bg-emerald-100', label: 'text-emerald-800' },
-  { card: 'border-green-300 bg-green-100',     label: 'text-green-800'   },
-  { card: 'border-teal-300 bg-teal-100',       label: 'text-teal-800'    },
+  { card: 'border-green-300 bg-green-100', label: 'text-green-800' },
+  { card: 'border-teal-300 bg-teal-100', label: 'text-teal-800' },
 ] as const
 
 const route = useRoute()

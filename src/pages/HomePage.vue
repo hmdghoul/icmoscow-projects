@@ -40,24 +40,23 @@
 
           <div v-if="activeProject" class="mb-16">
             <SectionHeader title="Current Active Project" subtitle="Your donations are making this happen" />
-            <div class="rounded-2xl bg-white p-8 shadow-sm">
-              <div class="flex flex-wrap items-start justify-between gap-4">
-                <div>
+            <div class="group rounded-2xl bg-white p-8 shadow-sm transition-all duration-300 hover:scale-[1.01] hover:shadow-lg">
+              <div class="flex flex-wrap items-center gap-8">
+                <div class="flex-1">
                   <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800">Active</span>
                   <h2 class="mt-3 text-2xl font-bold text-gray-900">
                     {{ activeProject.title }}
                   </h2>
-                  <p class="mt-2 max-w-xl text-gray-600">
+                  <p class="mt-2 text-gray-600">
                     {{ activeProject.shortDescription }}
                   </p>
+                  <RouterLink :to="`/projects/${activeProject.id}`" class="mt-4 inline-block rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700">
+                    Full Details
+                  </RouterLink>
                 </div>
-                <RouterLink :to="`/projects/${activeProject.id}`" class="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700">
-                  Full Details
-                </RouterLink>
-              </div>
-
-              <div class="mt-6">
-                <ProgressBar :raised="activeProject.raised" :goal="activeProject.goal" :show-label="true" />
+                <div class="flex shrink-0 justify-center">
+                  <CircularProgress :raised="activeProject.raised" :goal="activeProject.goal" />
+                </div>
               </div>
 
               <div class="mt-6 grid grid-cols-3 gap-4 border-t pt-6">
@@ -179,7 +178,7 @@ import { computed, reactive } from 'vue'
 import { RouterLink } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import StatCard from '../components/StatCard.vue'
-import ProgressBar from '../components/ProgressBar.vue'
+import CircularProgress from '../components/CircularProgress.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useProjects } from '../composables/useProjects'
